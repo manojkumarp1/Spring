@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mk.springbootapp.model.Employee;
 import com.mk.springbootapp.service.EmployeeService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @RestController
 @RequestMapping("/api/employees")
+@Slf4j
 public class EmployeeController {
 
     @Autowired
@@ -34,11 +37,12 @@ public class EmployeeController {
     // READ - ALL
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
+    	log.info("this is info");
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     // READ - BY ID
-    @GetMapping("/{id}")
+    @GetMapping("/{id}"	)
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
         return employeeService.getEmployeeById(id)
                 .map(ResponseEntity::ok)

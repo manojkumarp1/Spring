@@ -1,0 +1,35 @@
+package com.mk.springbootapp.config;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.mk.springbootapp.model.Users;
+import com.mk.springbootapp.repository.UserDetailsRepository;
+
+@Configuration
+public class DataLoader {
+
+	@Bean
+	CommandLineRunner init(UserDetailsRepository repo, PasswordEncoder encoder) {
+		return args -> {
+
+			String username = "admin";
+
+			if (repo.findByUsername(username).isEmpty()) {
+
+				Users user = new Users();
+				user.setUsername(username);
+				user.setPassword(encoder.encode("test"));
+				user.setRole("ROLE_ADMIN");
+
+				repo.save(user);
+
+				System.out.println("User saved successfully!");
+			} else {
+				System.out.println("User already exists!");
+			}
+		};
+	}
+}
