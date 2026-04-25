@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.mk.springbootapp.model.Role;
 import com.mk.springbootapp.model.Users;
 import com.mk.springbootapp.repository.UserDetailsRepository;
 
@@ -22,7 +23,21 @@ public class DataLoader {
 				Users user = new Users();
 				user.setUsername(username);
 				user.setPassword(encoder.encode("test"));
-				user.setRole("ROLE_ADMIN");
+				user.setRole(Role.ADMIN);
+
+				repo.save(user);
+
+				System.out.println("User saved successfully!");
+			} else {
+				System.out.println("User already exists!");
+			}
+
+			if (repo.findByUsername("manoj").isEmpty()) {
+
+				Users user = new Users();
+				user.setUsername("manoj");
+				user.setPassword(encoder.encode("test"));
+				user.setRole(Role.USER);
 
 				repo.save(user);
 

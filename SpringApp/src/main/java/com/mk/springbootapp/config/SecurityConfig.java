@@ -1,7 +1,9 @@
 package com.mk.springbootapp.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.mk.springbootapp.filter.JwtAuthFilter;
+import com.mk.springbootapp.model.Permissions;
 import com.mk.springbootapp.service.CustomUserDetailsService;
 
 @Configuration
@@ -27,7 +30,11 @@ public class SecurityConfig {
 		                "/swagger-ui/**",
 		                "/v3/api-docs/**",
 		                "/swagger-ui.html").permitAll()
-				.requestMatchers("/api/employees").hasRole("ADMIN")
+//				.requestMatchers("/api/employees").hasRole("ADMIN") only roles
+				.requestMatchers(HttpMethod.GET,"/api/employees").hasAuthority(Permissions.EMP_READ.name())
+				.requestMatchers(HttpMethod.POST,"/api/employees").hasAuthority(Permissions.EMP_WRITE.name())
+				.requestMatchers(HttpMethod.POST,"/api/employees").hasAuthority(Permissions.EMP_DELETE.name())
+
 				.anyRequest().authenticated());
 		// .httpBasic(withDefaults()); // ✅ Enables BasicAuthenticationFilter
 
