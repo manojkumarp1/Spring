@@ -25,11 +25,17 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
-		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(
-				auth -> auth.requestMatchers("/authenticate",
-		                "/swagger-ui/**",
-		                "/v3/api-docs/**",
-		                "/swagger-ui.html").permitAll()
+		http
+	    .csrf(csrf -> csrf.disable())
+	    .authorizeHttpRequests(auth -> auth
+	        .requestMatchers(
+	            "/authenticate",
+	            "/swagger-ui/**",
+	            "/v3/api-docs/**",
+	            "/swagger-ui.html",
+	            "/graphiql",
+	            "/graphql"
+	        ).permitAll()
 //				.requestMatchers("/api/employees").hasRole("ADMIN") only roles
 //			.requestMatchers(HttpMethod.GET,"/api/employees").hasAuthority(Permissions.EMP_READ.name())
 //				.requestMatchers(HttpMethod.POST,"/api/employees").hasAuthority(Permissions.EMP_WRITE.name())
